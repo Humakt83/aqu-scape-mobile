@@ -16,15 +16,16 @@
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
     <script src="cordova.js"></script>
     <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
-    <script src="js/controllers/tool-controller.js"></script>
+    <script src="js/controllers/tools-controller.js"></script>
     <script src="js/services/plant-service.js"></script>
   </head>
   <body ng-app="aqu-scape">
-    <ion-nav-view></ion-nav-view>
+    <ion-nav-view name="mainContent"></ion-nav-view>
   </body>
 </html>

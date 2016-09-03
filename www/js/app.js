@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('aqu-scape', ['ionic', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $ionicLoading, $cordovaSplashscreen, $timeout) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -20,12 +20,39 @@ angular.module('aqu-scape', ['ionic', 'ngCordova'])
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    $timeout(function() {
+      console.log($cordovaSplashscreen);
+      //$cordovaSplashscreen.hide();
+    },2000);
   });
+  
+  $rootScope.$on('loading:show', function () {    
+    $ionicLoading.show({
+        template: '<ion-spinner></ion-spinner> Loading ...'
+    })
+  });
+
+  $rootScope.$on('loading:hide', function () {
+    $ionicLoading.hide();
+  });
+
+  $rootScope.$on('$stateChangeStart', function () {
+      console.log('Loading ...');
+      $rootScope.$broadcast('loading:show');
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function () {
+      console.log('done');
+      $rootScope.$broadcast('loading:hide');
+  });
+  
 })
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('app', {
-    url: '/app',
+  .state('home', {
+    url: '/home',
     views: {
       'mainContent': {
         templateUrl: 'templates/tools.html',
@@ -40,5 +67,5 @@ angular.module('aqu-scape', ['ionic', 'ngCordova'])
 
   });
 
-  $urlRouterProvider.otherwise('/app');
+  $urlRouterProvider.otherwise('/home');
 })
