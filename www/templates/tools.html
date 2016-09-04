@@ -1,10 +1,21 @@
 <ion-view view-title="Aqu-Scape">
-    <ion-content>
+    <ion-content class="app">
         <div id="palette" class="card palette">
             <div class="paletteArrow" ng-click="leftArrow()">⇚</div>
             <div class="plantPalette" ng-repeat="plant in plantsToShow" ng-style="plant.style">
             </div>
             <div class="paletteArrow" ng-click="rightArrow()">⇛</div> 
+        </div>
+        <div class="card">
+            <canvas height="400" width="{{width}}">
+        </div>
+        <div class="card">
+            <div class="tools">
+                <button class="toolButton">Clear</button>
+                <button class="toolButton">Undo</button>
+                <button class="toolButton">Redo</button>
+                <button class="toolButton">Save</button>
+            </div>
         </div>
     </ion-content>
 </ion-view>

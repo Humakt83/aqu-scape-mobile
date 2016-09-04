@@ -11,8 +11,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', 'plants', 
     }
 
     var widthOfPlant = 22;
-    var width = document.getElementById('palette').clientWidth;
-    var numberOfPlantsShown = Math.floor(width / widthOfPlant) - 2;
+    $scope.width = document.getElementById('palette').clientWidth;
+    var numberOfPlantsShown = Math.floor($scope.width / widthOfPlant) - 2;
     var currentStartingIndex = 0;
 
     plants.forEach(function(plant) {
