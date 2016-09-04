@@ -1,1 +1,19 @@
-/* Empty. Add your own CSS if you like */
+.palette {
+    padding: 2px;
+}
+
+ .paletteArrow {
+    background-color: black;
+    color: white;
+    padding-left: 2px;
+    font-size: larger;
+}
+
+.plantPalette, .paletteArrow {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 1px;
+    border-radius: 15px;
+    vertical-align: middle;
+}

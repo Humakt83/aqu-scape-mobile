@@ -22,7 +22,6 @@ angular.module('aqu-scape', ['ionic', 'ngCordova'])
     }
 
     $timeout(function() {
-      console.log($cordovaSplashscreen);
       //$cordovaSplashscreen.hide();
     },2000);
   });
