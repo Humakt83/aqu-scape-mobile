@@ -1,4 +1,11 @@
-angular.module('aqu-scape').controller('ToolsController', [ '$scope', 'plants', function($scope, plants) {
+angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', function($scope, $ionicModal, plants) {
+
+    $ionicModal.fromTemplateUrl('dimensions.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal
+    });
 
     $scope.leftArrow = function() {
         currentStartingIndex = Math.max(0, --currentStartingIndex);
@@ -27,5 +34,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', 'plants', 
 
     $scope.leftArrow();
     
+    $scope.newCanvas = function() {
+        $scope.modal.show();
+    }
+
+    $scope.dimensionsChosen = function() {
+        $scope.modal.hide();
+    }
 
 }]);
