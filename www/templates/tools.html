@@ -2,7 +2,7 @@
     <ion-content class="app">
         <div id="palette" class="card palette">
             <div class="paletteArrow" ng-click="leftArrow()">⇚</div>
-            <div class="plantPalette" ng-repeat="plant in plantsToShow" ng-style="plant.style">
+            <div class="plantPalette" ng-repeat="plant in plantsToShow" ng-click="setBrush(plant)" ng-style="plant.style">
             </div>
             <div class="paletteArrow" ng-click="rightArrow()">⇛</div> 
         </div>
@@ -18,6 +18,9 @@
                 <button class="toolButton" ng-click="newCanvas()">New</button>
             </div>
         </div>
+        <div class="card" ng-if="brush" ng-style="brush.style">
+            <p class="brush">Selected brush: {{brush.scientificName}}</p>
+        </div>
     </ion-content>
 </ion-view>
 
@@ -26,7 +29,7 @@
         <ion-header-bar>
             <h1 class="title">Choose dimensions</h1>
         </ion-header-bar>
-        <ion-content>
+        <ion-content class="app">
             <div class="card">
                 <p>Choose dimensions in centimeters for the aquarium.</p>
             </div>

@@ -42,4 +42,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         $scope.modal.hide();
     }
 
+    $scope.setBrush = function(plant) {
+        $scope.brush = plant;
+    }
+
 }]);
