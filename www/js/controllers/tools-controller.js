@@ -1,5 +1,19 @@
 angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', function($scope, $ionicModal, plants) {
 
+    initCanvas = function() {
+        var canvas = document.getElementById('aquCanvas');
+        paper.setup(canvas);
+        var tool = new paper.Tool();
+        tool.onMouseDown = function(event) {            
+            if (!$scope.brush) return;
+            var circle = new paper.Path.Circle(event.point, $scope.brush.diameter);
+            circle.fillColor = $scope.brush.color;
+            paper.view.draw();
+        }       
+    }
+
+    initCanvas();
+
     $ionicModal.fromTemplateUrl('dimensions.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -26,7 +40,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         var minimumGreen = 100;
         var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
         var red = Math.floor(Math.random() * green);
-        var blue = Math.floor(Math.random() * green);        
+        var blue = Math.floor(Math.random() * green);
+        plant.color = "rgb(" + red + ", " + green + ", " + blue + ")";
         plant.style = {"background-color": "rgb(" + red + ", " + green + ", " + blue + ")"};
     });
 
