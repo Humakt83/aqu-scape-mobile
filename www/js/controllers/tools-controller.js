@@ -3,6 +3,10 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');
         paper.setup(canvas);
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
         var tool = new paper.Tool();
         tool.onMouseDown = function(event) {            
             if (!$scope.brush) return;

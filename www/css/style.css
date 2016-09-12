@@ -30,3 +30,15 @@
 .brush {
     color: white;
 }
+
+.canvasContainer {
+    background-color: rgb(220, 220, 220);
+    padding: 2px;
+}
+
+canvas {
+    background-color: white;
+    position: relative;
+    width: inherit;
+    height: 20em;
+}
