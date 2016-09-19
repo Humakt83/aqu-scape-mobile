@@ -40,7 +40,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     var numberOfPlantsShown = Math.floor($scope.width / widthOfPlant) - 2;
     var currentStartingIndex = 0;  
 
-    plants.query(function(plantArray) {
+    plants.$promise.then(function(plantArray) {
         plantArray.forEach(function(plant) {
             var minimumGreen = 100;
             var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
@@ -49,8 +49,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             plant.color = "rgb(" + red + ", " + green + ", " + blue + ")";
             plant.style = {"background-color": "rgb(" + red + ", " + green + ", " + blue + ")"};
         })
-    }).$promise.then(function(result) {
-        $scope.plants = result;
+        $scope.plants = plantArray;
         $scope.leftArrow();  
     });    
     

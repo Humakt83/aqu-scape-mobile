@@ -58,7 +58,7 @@ angular.module('aqu-scape', ['ionic', 'ngCordova', 'ngResource'])
         controller: 'ToolsController',
         resolve: {
           plants: ['PlantService', function(PlantService) {
-            return PlantService;
+            return PlantService.query();
           }]
         }
       }
