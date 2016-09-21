@@ -19,8 +19,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 for (; currentUndoIndex < actionStack.length - 1;) {
                     actionStack.pop();
                 }
-            }    
-            console.log(actionStack.length);                
+            }                  
             actionStack.push(circle);
             currentUndoIndex = actionStack.length -1;
             paper.view.draw();
@@ -87,6 +86,13 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         if (actionStack.length < 1 || !actionStack[currentUndoIndex + 1]) return;
         currentUndoIndex = currentUndoIndex + 1;    
         actionStack[currentUndoIndex].opacity = '1';
+    }
+
+    $scope.clear = function() {
+        actionStack = [];
+        currentUndoIndex = 0;
+        paper.project.activeLayer.removeChildren();
+        paper.view.draw;
     }
 
 }]);
