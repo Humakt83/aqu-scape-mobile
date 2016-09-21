@@ -1,5 +1,8 @@
 angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', function($scope, $ionicModal, plants) {
 
+    var actionStack = [];
+    var currentUndoIndex = 0;
+
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');
         paper.setup(canvas);
@@ -12,6 +15,14 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             if (!$scope.brush) return;
             var circle = new paper.Path.Circle(event.point, $scope.brush.diameter);
             circle.fillColor = $scope.brush.color;
+            if (actionStack.length > 1) {
+                for (; currentUndoIndex < actionStack.length - 1;) {
+                    actionStack.pop();
+                }
+            }    
+            console.log(actionStack.length);                
+            actionStack.push(circle);
+            currentUndoIndex = actionStack.length -1;
             paper.view.draw();
         }       
     }
@@ -64,6 +75,18 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     $scope.setBrush = function(plant) {
         $scope.brush = plant;
+    }
+
+    $scope.undo = function() {
+        if (actionStack.length < 1) return;        
+        actionStack[currentUndoIndex].opacity = '0';
+        currentUndoIndex = Math.max(0, currentUndoIndex - 1);
+    }
+
+    $scope.redo = function() {
+        if (actionStack.length < 1 || !actionStack[currentUndoIndex + 1]) return;
+        currentUndoIndex = currentUndoIndex + 1;    
+        actionStack[currentUndoIndex].opacity = '1';
     }
 
 }]);
