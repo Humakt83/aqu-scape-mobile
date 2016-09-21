@@ -15,11 +15,9 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             if (!$scope.brush) return;
             var circle = new paper.Path.Circle(event.point, $scope.brush.diameter);
             circle.fillColor = $scope.brush.color;
-            if (actionStack.length > 1) {
-                for (; currentUndoIndex < actionStack.length - 1;) {
-                    actionStack.pop();
-                }
-            }                  
+            for (; currentUndoIndex < actionStack.length - 1;) {
+                actionStack.pop();
+            }    
             actionStack.push(circle);
             currentUndoIndex = actionStack.length -1;
             paper.view.draw();
