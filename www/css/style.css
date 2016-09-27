@@ -34,11 +34,13 @@
 .canvasContainer {
     background-color: rgb(220, 220, 220);
     padding: 2px;
+    overflow: hidden;
+    height: 304px;
 }
 
 canvas {
     background-color: white;
     position: relative;
-    width: inherit;
-    height: 20em;
+    width: 100%;
+    height: 300px;
 }

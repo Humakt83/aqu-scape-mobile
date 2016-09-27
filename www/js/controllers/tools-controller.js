@@ -6,10 +6,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');
         paper.setup(canvas);
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.width  = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        paper.view.draw();
         var tool = new paper.Tool();
         tool.onMouseDown = function(event) {            
             if (!$scope.brush) return;
@@ -77,20 +74,24 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     $scope.undo = function() {
         if (actionStack.length < 1) return;        
         actionStack[currentUndoIndex].opacity = '0';
+        //paper.project.activeLayer.removeChildren(currentUndoIndex);
         currentUndoIndex = Math.max(0, currentUndoIndex - 1);
+        paper.view.draw();
     }
 
     $scope.redo = function() {
         if (actionStack.length < 1 || !actionStack[currentUndoIndex + 1]) return;
-        currentUndoIndex = currentUndoIndex + 1;    
+        currentUndoIndex = currentUndoIndex + 1;
+        //paper.project.activeLayer.addChild(actionStack[currentUndoIndex]);    
         actionStack[currentUndoIndex].opacity = '1';
+        paper.view.draw();
     }
 
     $scope.clear = function() {
         actionStack = [];
         currentUndoIndex = 0;
         paper.project.activeLayer.removeChildren();
-        paper.view.draw;
+        paper.view.draw();
     }
 
 }]);
