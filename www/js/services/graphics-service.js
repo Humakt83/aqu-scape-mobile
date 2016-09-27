@@ -2,13 +2,11 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
 
     scaleWidthToFittingDimensions = function(diameter) {
         var multiplier = paper.view.bounds.height / AquariumDimensions.getWidth();
-        console.log('Width: ' + multiplier);
         return diameter * multiplier;
     }
 
     scaleDepthToFittingDimensions = function(diameter) {
         var multiplier = paper.view.bounds.width / AquariumDimensions.getDepth();
-        console.log('Depth: ' + multiplier);
         return diameter * multiplier;
     }
 
