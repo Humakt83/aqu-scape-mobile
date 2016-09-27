@@ -1,21 +1,20 @@
-angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', function($scope, $ionicModal, plants) {
+angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', 'GraphicsService', function($scope, $ionicModal, plants, GraphicsService) {
 
     var actionStack = [];
     var currentUndoIndex = 0;
 
     initCanvas = function() {
-        var canvas = document.getElementById('aquCanvas');
+        var canvas = document.getElementById('aquCanvas');        
         paper.setup(canvas);
-        paper.view.draw();
+        paper.view.draw();        
         var tool = new paper.Tool();
         tool.onMouseDown = function(event) {            
             if (!$scope.brush) return;
-            var circle = new paper.Path.Circle(event.point, $scope.brush.diameter);
-            circle.fillColor = $scope.brush.color;
+            var ellipse = GraphicsService.drawEllipseFittingCanvasAndDimension(event.point, $scope.brush.diameter, $scope.brush.color);
             for (; currentUndoIndex < actionStack.length - 1;) {
                 actionStack.pop();
             }    
-            actionStack.push(circle);
+            actionStack.push(ellipse);
             currentUndoIndex = actionStack.length -1;
             paper.view.draw();
         }       
