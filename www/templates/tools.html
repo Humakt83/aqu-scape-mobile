@@ -2,7 +2,8 @@
     <ion-content class="app">
         <div id="palette" class="card palette">
             <div class="paletteArrow" ng-click="leftArrow()">⇚</div>
-            <div class="plantPalette" ng-repeat="plant in plantsToShow" ng-click="setBrush(plant)" ng-style="plant.style">
+            <div class="plantPalette" ng-repeat="plant in plantsToShow" ng-click="setBrush(plant)" ng-style="plant.backgroundColor">
+                <p class="plantIdentifier" ng-style="plant.textColor">{{plant.identificationNumber}}</p>
             </div>
             <div class="paletteArrow" ng-click="rightArrow()">⇛</div> 
         </div>
@@ -18,8 +19,8 @@
                 <button class="toolButton" ng-click="newCanvas()">New</button>
             </div>
         </div>
-        <div class="card" ng-if="brush" ng-style="brush.style">
-            <p class="brush">Selected brush: {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
+        <div class="card" ng-if="brush" ng-style="brush.backgroundColor">
+            <p class="brush" ng-style="brush.textColor">Selected brush ({{brush.identificationNumber}}): {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
         </div>
     </ion-content>
 </ion-view>

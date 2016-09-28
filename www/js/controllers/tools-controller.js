@@ -50,8 +50,15 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
             var red = Math.floor(Math.random() * green);
             var blue = Math.floor(Math.random() * green);
-            plant.color = "rgb(" + red + ", " + green + ", " + blue + ")";
-            plant.style = {"background-color": "rgb(" + red + ", " + green + ", " + blue + ")"};
+            var textColor = '';
+            if (green + red + blue > 350) {
+                textColor = 'black';
+            } else {
+                textColor = 'white';
+            }
+            plant.color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+            plant.backgroundColor = {'background-color': 'rgb(' + red + ', ' + green + ', ' + blue + ')'};
+            plant.textColor = {'color': textColor};
         })
         $scope.plants = plantArray;
         $scope.leftArrow();  

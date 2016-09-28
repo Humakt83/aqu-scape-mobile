@@ -27,6 +27,12 @@
     vertical-align: middle;
 }
 
+p.plantIdentifier {
+    font-size: small;
+    margin-left: 2px;
+    font-weight: bolder;
+}
+
 .brush {
     color: white;
 }
