@@ -19,8 +19,11 @@
                 <button class="toolButton" ng-click="newCanvas()">New</button>
             </div>
         </div>
+        <div class="card">
+            <span class="aquText"><strong>Aquarium dimensions</strong>: width: {{width}} cm, depth: {{depth}} cm</span>
+        </div>
         <div class="card" ng-if="brush" ng-style="brush.backgroundColor">
-            <p class="brush" ng-style="brush.textColor">Selected brush ({{brush.identificationNumber}}): {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
+            <p class="brush aquText" ng-style="brush.textColor"><strong>Selected brush ({{brush.identificationNumber}})<strong>: {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
         </div>
     </ion-content>
 </ion-view>

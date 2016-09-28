@@ -33,6 +33,10 @@ p.plantIdentifier {
     font-weight: bolder;
 }
 
+.aquText {
+    padding: 3px;
+}
+
 .brush {
     color: white;
 }
