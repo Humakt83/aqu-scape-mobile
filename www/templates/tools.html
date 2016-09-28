@@ -35,15 +35,15 @@
                 <p>Choose dimensions in centimeters for the aquarium.</p>
             </div>
             <div class="card">                
-                <label for="depth">Width</label>
-                <input id="depth" type="text" placeholder="100">
+                <label for="width">Width</label>
+                <input id="width" type="text" placeholder="100" ng-model="width">
             </div>
             <div class="card">                
                 <label for="depth">Depth</label>
-                <input id="depth" type="text" placeholder="50">
+                <input id="depth" type="text" placeholder="50" ng-model="depth">
             </div>
             <div class="card">
-                <button ng-click="dimensionsChosen()">Create</button>
+                <button ng-click="dimensionsChosen(depth, width)" ng-disabled="depth.trim().length < 1 || width.trim().length < 1">Create</button>
             </div>
         </ion-content>
     </ion-modal-view>

@@ -1,7 +1,11 @@
-angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', 'GraphicsService', function($scope, $ionicModal, plants, GraphicsService) {
+angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', 'GraphicsService', 'AquariumDimensions', 
+        function($scope, $ionicModal, plants, GraphicsService, AquariumDimensions) {
 
     var actionStack = [];
     var currentUndoIndex = 0;
+
+    $scope.width = AquariumDimensions.getWidth();
+    $scope.depth = AquariumDimensions.getDepth();
 
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');        
@@ -40,8 +44,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     }
 
     var widthOfPlant = 22;
-    $scope.width = document.getElementById('palette').clientWidth;
-    var numberOfPlantsShown = Math.floor($scope.width / widthOfPlant) - 2;
+    var paletteWidth = document.getElementById('palette').clientWidth;
+    var numberOfPlantsShown = Math.floor(paletteWidth / widthOfPlant) - 2;
     var currentStartingIndex = 0;  
 
     plants.$promise.then(function(plantArray) {
@@ -69,7 +73,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         $scope.modal.show();
     }
 
-    $scope.dimensionsChosen = function() {
+    $scope.dimensionsChosen = function(width, depth) {
+        $scope.width = width;
+        $scope.depth = depth;
+        $scope.clear();
+        AquariumDimensions.setDepth($scope.depth);
+        AquariumDimensions.setWidth($scope.width);
         $scope.modal.hide();
     }
 
