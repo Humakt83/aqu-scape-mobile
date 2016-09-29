@@ -21,7 +21,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 event.stopPropagation();
                 ellipse.strokeColor = 'yellow';
                 $scope.selectedItem = ellipse;
-            };            
+            };
+            if($scope.brush.customType) {
+                ellipse.customType = true;
+                $scope.selectedItem = ellipse;
+                ellipse.strokeColor = 'yellow';
+            }            
             for (; currentUndoIndex < actionStack.length - 1;) {
                 actionStack.pop();
             }    
@@ -30,13 +35,20 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             paper.view.draw();
         }
         paper.view.onMouseDrag = function(event) {
-            if (!$scope.selectedItem) return;
-            $scope.selectedItem.position = event.point;
+            var item = $scope.selectedItem;
+            if (!item) return;
+            if (item.customType && !item.resized) {
+                if (event.point.y <= item.bounds.topLeft.y || event.point.x <= item.bounds.topLeft.x) item.bounds.topLeft = event.point;
+                else item.bounds.bottomRight = event.point;
+            } else {
+                item.position = event.point;
+            }
         }
         paper.view.onMouseUp = function(event) {
             if (!$scope.selectedItem) return;
             $scope.selectedItem.strokeColor = 'black';
-            $scope.selectedItem.position = event.point; 
+            if (!$scope.selectedItem.customType) $scope.selectedItem.position = event.point;
+            $scope.selectedItem.resized = true;
             $scope.selectedItem = undefined;
         }
     }
@@ -125,11 +137,11 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     }
 
     $scope.stoneBrush = function() {
-        $scope.brush = {customType: 'stone', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(150, 150, 150)'}};
+        $scope.brush = {customType: 'stone', color: 'rgb(150, 150, 150)', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(150, 150, 150)'}, diameter: 5};
     }
 
     $scope.treeBrush = function() {
-        $scope.brush = {customType: 'tree', textColor: { 'color': 'white'}, backgroundColor: {'background-color': 'rgb(170, 80, 80)'}};
+        $scope.brush = {customType: 'tree', color: 'rgb(170, 80, 80)', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(170, 80, 80)'}, diameter: 5};
     }
 
 }]);
