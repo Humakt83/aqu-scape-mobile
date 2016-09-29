@@ -124,4 +124,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         paper.view.draw();
     }
 
+    $scope.stoneBrush = function() {
+        $scope.brush = {customType: 'stone', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(150, 150, 150)'}};
+    }
+
+    $scope.treeBrush = function() {
+        $scope.brush = {customType: 'tree', textColor: { 'color': 'white'}, backgroundColor: {'background-color': 'rgb(170, 80, 80)'}};
+    }
+
 }]);

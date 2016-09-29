@@ -7,6 +7,14 @@
             </div>
             <div class="paletteArrow" ng-click="rightArrow()">⇛</div> 
         </div>
+        <div class="card">
+            <div class="rock" ng-click="stoneBrush()">
+                STONE
+            </div>
+            <div class="tree" ng-click="treeBrush()">
+                BRANCH/ROOT
+            </div>
+        </div>
         <div class="card canvasContainer">
             <canvas id="aquCanvas">
         </div>
@@ -24,7 +32,11 @@
             <span class="aquText smallText">Width is y-axis (direction ↓) while depth is x-axis (direction →)</span>
         </div>
         <div class="card" ng-if="brush" ng-style="brush.backgroundColor">
-            <p class="brush aquText" ng-style="brush.textColor"><strong>Selected brush ({{brush.identificationNumber}})<strong>: {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
+            <p class="brush aquText" ng-style="brush.textColor">
+                <span ng-if="!brush.customType"><strong>Selected brush ({{brush.identificationNumber}})<strong>: {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</span>
+                <span ng-If="brush.customType === 'tree'">Selected brush: BRANCH/ROOT</span>
+                <span ng-If="brush.customType === 'stone'">Selected brush: STONE</span>
+            </p>
         </div>
     </ion-content>
 </ion-view>
