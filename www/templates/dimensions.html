@@ -1,0 +1,21 @@
+ <ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Choose dimensions</h1>
+    </ion-header-bar>
+    <ion-content class="app">
+        <div class="card">
+            <p>Choose dimensions in centimeters for the aquarium.</p>
+        </div>
+        <div class="card">                
+            <label for="width">Width</label>
+            <input id="width" type="text" placeholder="100" ng-model="width">
+        </div>
+        <div class="card">                
+            <label for="depth">Depth</label>
+            <input id="depth" type="text" placeholder="50" ng-model="depth">
+        </div>
+        <div class="card">
+            <button ng-click="dimensionsChosen(width, depth)" ng-disabled="depth.trim().length < 1 || width.trim().length < 1">Create</button>
+        </div>
+    </ion-content>
+</ion-modal-view>

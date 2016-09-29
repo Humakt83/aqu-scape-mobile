@@ -7,26 +7,43 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     $scope.width = AquariumDimensions.getWidth();
     $scope.depth = AquariumDimensions.getDepth();
 
+    $scope.selectedItem;
+
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');        
         paper.setup(canvas);
         paper.view.draw();        
-        var tool = new paper.Tool();
-        tool.onMouseDown = function(event) {            
+        paper.view.onMouseDown = function(event) {            
             if (!$scope.brush) return;
             var ellipse = GraphicsService.drawEllipseFittingCanvasAndDimension(event.point, $scope.brush.diameter, $scope.brush.color);
+            ellipse.onMouseDown = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                ellipse.strokeColor = 'yellow';
+                $scope.selectedItem = ellipse;
+            };            
             for (; currentUndoIndex < actionStack.length - 1;) {
                 actionStack.pop();
             }    
             actionStack.push(ellipse);
             currentUndoIndex = actionStack.length -1;
             paper.view.draw();
-        }       
+        }
+        paper.view.onMouseDrag = function(event) {
+            if (!$scope.selectedItem) return;
+            $scope.selectedItem.position = event.point;
+        }
+        paper.view.onMouseUp = function(event) {
+            if (!$scope.selectedItem) return;
+            $scope.selectedItem.strokeColor = 'black';
+            $scope.selectedItem.position = event.point; 
+            $scope.selectedItem = undefined;
+        }
     }
 
     initCanvas();
 
-    $ionicModal.fromTemplateUrl('dimensions.html', {
+    $ionicModal.fromTemplateUrl('templates/dimensions.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function(modal) {

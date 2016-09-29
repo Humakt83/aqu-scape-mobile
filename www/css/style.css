@@ -37,6 +37,10 @@ p.plantIdentifier {
     padding: 3px;
 }
 
+.smallText{
+    font-size: x-small;
+}
+
 .brush {
     color: white;
 }

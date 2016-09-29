@@ -18,6 +18,7 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
             var rectangle = new paper.Rectangle(point, size);
             var ellipse = new paper.Path.Ellipse(rectangle);
             ellipse.fillColor = color;
+            ellipse.strokeColor = 'black';
             return ellipse;
         }
     }

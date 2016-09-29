@@ -20,34 +20,11 @@
             </div>
         </div>
         <div class="card">
-            <span class="aquText"><strong>Aquarium dimensions</strong>: width: {{width}} cm, depth: {{depth}} cm</span>
+            <span class="aquText"><strong>Aquarium dimensions</strong>: width: {{width}} cm, depth: {{depth}} cm</span><br>
+            <span class="aquText smallText">Width is y-axis (direction ↓) while depth is x-axis (direction →)</span>
         </div>
         <div class="card" ng-if="brush" ng-style="brush.backgroundColor">
             <p class="brush aquText" ng-style="brush.textColor"><strong>Selected brush ({{brush.identificationNumber}})<strong>: {{brush.scientificName}} (diameter: {{brush.diameter}} cm, height: {{brush.height}} cm)</p>
         </div>
     </ion-content>
 </ion-view>
-
-<script id="dimensions.html" type="text/ng-template">
-    <ion-modal-view>
-        <ion-header-bar>
-            <h1 class="title">Choose dimensions</h1>
-        </ion-header-bar>
-        <ion-content class="app">
-            <div class="card">
-                <p>Choose dimensions in centimeters for the aquarium.</p>
-            </div>
-            <div class="card">                
-                <label for="width">Width</label>
-                <input id="width" type="text" placeholder="100" ng-model="width">
-            </div>
-            <div class="card">                
-                <label for="depth">Depth</label>
-                <input id="depth" type="text" placeholder="50" ng-model="depth">
-            </div>
-            <div class="card">
-                <button ng-click="dimensionsChosen(depth, width)" ng-disabled="depth.trim().length < 1 || width.trim().length < 1">Create</button>
-            </div>
-        </ion-content>
-    </ion-modal-view>
-</script>
