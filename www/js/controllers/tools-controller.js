@@ -1,8 +1,5 @@
-angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', 'GraphicsService', 'AquariumDimensions', 
-        function($scope, $ionicModal, plants, GraphicsService, AquariumDimensions) {
-
-    var actionStack = [];
-    var currentUndoIndex = 0;
+angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicModal', 'plants', 'GraphicsService', 'AquariumDimensions', 'UndoRedoTool',
+        function($scope, $ionicModal, plants, GraphicsService, AquariumDimensions, UndoRedoTool) {  
 
     $scope.width = AquariumDimensions.getWidth();
     $scope.depth = AquariumDimensions.getDepth();
@@ -10,11 +7,6 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     $scope.selectedItem;
 
     initCanvas = function() {
-        removeRedoStack = function() {
-            for (; currentUndoIndex < actionStack.length - 1;) {
-                actionStack.pop();
-            }    
-        }
         var canvas = document.getElementById('aquCanvas');        
         paper.setup(canvas);
         paper.view.draw();        
@@ -33,9 +25,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 ellipse.strokeColor = 'yellow';
             }
             ellipse.originalPosition = ellipse.position;     
-            removeRedoStack();
-            actionStack.push({item: ellipse, action: 'add'});
-            currentUndoIndex = actionStack.length -1;
+            UndoRedoTool.clearRedoStack();
+            UndoRedoTool.pushToActionStack(ellipse, UndoRedoTool.addAction());
             paper.view.draw();
         }
         paper.view.onMouseDrag = function(event) {
@@ -53,12 +44,11 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             if (!item || item.strokeColor === 'yellow') return;
             item.strokeColor = 'black';
             if (!item.customType || item.resized) {
-                removeRedoStack();
+                UndoRedoTool.clearRedoStack();            
                 var previousPosition = item.originalPosition;
                 var newPosition = event.point.x;            
                 item.position = event.point;
-                actionStack.push({item: item, action: 'move', previousPosition: previousPosition, newPosition: newPosition});
-                currentUndoIndex = actionStack.length -1;
+                UndoRedoTool.pushToActionStack(item, UndoRedoTool.moveAction(), previousPosition, newPosition);
                 item.originalPosition = item.position;
             }
             item.resized = true;
@@ -130,31 +120,16 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     }
 
     $scope.undo = function() {
-        if (actionStack.length < 1 || currentUndoIndex < 0) return;
-        if (actionStack[currentUndoIndex].action === 'move') {
-            actionStack[currentUndoIndex].item.position = actionStack[currentUndoIndex].previousPosition;
-        } else {
-            actionStack[currentUndoIndex].item.opacity = '0';
-        }        
-        currentUndoIndex -= 1;
-        paper.view.draw();
+        UndoRedoTool.undo();
     }
 
     $scope.redo = function() {
-        if (actionStack.length < 1 || !actionStack[currentUndoIndex + 1]) return;
-        currentUndoIndex = currentUndoIndex + 1;
-        if (actionStack[currentUndoIndex].action === 'move') {
-            actionStack[currentUndoIndex].item.position = actionStack[currentUndoIndex].newPosition;
-        } else {
-            actionStack[currentUndoIndex].item.opacity = '1';
-        }
-        paper.view.draw();
+        UndoRedoTool.redo();
     }
 
     $scope.clear = function() {
         $scope.selectedItem = undefined;
-        actionStack = [];
-        currentUndoIndex = 0;
+        UndoRedoTool.reset()
         paper.project.activeLayer.removeChildren();
         paper.view.draw();
     }
