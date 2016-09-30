@@ -6,6 +6,8 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     $scope.selectedItem;
 
+    var drawnPlants = []
+
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');        
         paper.setup(canvas);
@@ -24,15 +26,18 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 $scope.selectedItem = ellipse;
                 ellipse.strokeColor = 'yellow';
             } else {
+                drawnPlants.push(ellipse);
+                ellipse.plant = $scope.brush;
                 var text = new paper.PointText(ellipse.position);
                 text.justification = 'center';
                 text.fillColor = $scope.brush.textColor.color;
                 text.content = $scope.brush.identificationNumber;
                 ellipse.text = text;
+                goThroughDrawnPlants();
             }
             ellipse.originalPosition = ellipse.position;         
             UndoRedoTool.clearRedoStack();
-            UndoRedoTool.pushToActionStack(ellipse, UndoRedoTool.addAction());
+            UndoRedoTool.pushToActionStack(ellipse, UndoRedoTool.addAction());            
             paper.view.draw();
         }
         paper.view.onMouseDrag = function(event) {
@@ -58,12 +63,35 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 UndoRedoTool.pushToActionStack(item, UndoRedoTool.moveAction(), previousPosition, newPosition);
                 item.originalPosition = item.position;
             }
+            if (!item.customType) goThroughDrawnPlants();            
             item.resized = true;
             $scope.selectedItem = undefined;
         }
     }    
 
     initCanvas();
+
+    goThroughDrawnPlants = function() {
+        let visiblePlants = drawnPlants.filter(function(plant) { return plant.opacity === 1});
+        visiblePlants.forEach(function(ellipse) {
+            function isShadowed(ellipse) {
+                for (var i = 0; i < visiblePlants.length; i++) {
+                    var ellipseToCompare = visiblePlants[i];
+                    if (ellipse !== ellipseToCompare && (ellipse.intersects(ellipseToCompare) || ellipseToCompare.contains(ellipse.position))) {
+                        if (ellipse.plant.height < ellipseToCompare.plant.height) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            if (isShadowed(ellipse)) {
+                ellipse.fillColor = 'red';
+            } else {
+                ellipse.fillColor = ellipse.plant.color;
+            }         
+        });
+    }
 
     $ionicModal.fromTemplateUrl('templates/dimensions.html', {
         scope: $scope,
@@ -114,13 +142,16 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     $scope.undo = function() {
         UndoRedoTool.undo();
+        goThroughDrawnPlants();
     }
 
     $scope.redo = function() {
         UndoRedoTool.redo();
+        goThroughDrawnPlants();
     }
 
     $scope.clear = function() {
+        drawnPlants = [];
         $scope.selectedItem = undefined;
         UndoRedoTool.reset()
         paper.project.activeLayer.removeChildren();
