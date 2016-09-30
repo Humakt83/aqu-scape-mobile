@@ -23,8 +23,14 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 ellipse.customType = true;
                 $scope.selectedItem = ellipse;
                 ellipse.strokeColor = 'yellow';
+            } else {
+                var text = new paper.PointText(ellipse.position);
+                text.justification = 'center';
+                text.fillColor = $scope.brush.textColor.color;
+                text.content = $scope.brush.identificationNumber;
+                ellipse.text = text;
             }
-            ellipse.originalPosition = ellipse.position;     
+            ellipse.originalPosition = ellipse.position;         
             UndoRedoTool.clearRedoStack();
             UndoRedoTool.pushToActionStack(ellipse, UndoRedoTool.addAction());
             paper.view.draw();
@@ -37,6 +43,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 else item.bounds.bottomRight = event.point;
             } else {
                 item.position = event.point;
+                item.text.position = event.point;
             }
         }
         paper.view.onMouseUp = function(event) {

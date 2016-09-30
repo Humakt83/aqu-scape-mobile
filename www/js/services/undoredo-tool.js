@@ -19,8 +19,10 @@ angular.module('aqu-scape').factory('UndoRedoTool', [function() {
             if (actionStack.length < 1 || currentUndoIndex < 0) return;
             if (actionStack[currentUndoIndex].action === 'move') {
                 actionStack[currentUndoIndex].item.position = actionStack[currentUndoIndex].previousPosition;
+                if (actionStack[currentUndoIndex].item.text) actionStack[currentUndoIndex].item.text.position = actionStack[currentUndoIndex].previousPosition;
             } else {
                 actionStack[currentUndoIndex].item.opacity = '0';
+                if (actionStack[currentUndoIndex].item.text) actionStack[currentUndoIndex].item.text.opacity = '0';
             }        
             currentUndoIndex -= 1;
             paper.view.draw();
@@ -30,8 +32,10 @@ angular.module('aqu-scape').factory('UndoRedoTool', [function() {
             currentUndoIndex = currentUndoIndex + 1;
             if (actionStack[currentUndoIndex].action === 'move') {
                 actionStack[currentUndoIndex].item.position = actionStack[currentUndoIndex].newPosition;
+                if (actionStack[currentUndoIndex].item.text) actionStack[currentUndoIndex].item.text.position = actionStack[currentUndoIndex].newPosition;
             } else {
                 actionStack[currentUndoIndex].item.opacity = '1';
+                if (actionStack[currentUndoIndex].item.text) actionStack[currentUndoIndex].item.text.opacity = '1';
             }
             paper.view.draw();
         },
