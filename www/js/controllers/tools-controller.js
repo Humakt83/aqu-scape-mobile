@@ -82,18 +82,35 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     plants.$promise.then(function(plantArray) {
         plantArray.forEach(function(plant) {
-            var minimumGreen = 100;
-            var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
-            var red = Math.floor(Math.random() * green);
-            var blue = Math.floor(Math.random() * green);
+            function getSumOfColor(color) {
+                return color.red + color.green + color.blue;
+            }
+            function randomColor() {
+                var minimumGreen = 100;
+                var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
+                var red = Math.floor(Math.random() * green);
+                var blue = Math.floor(Math.random() * green);
+                return {green: green, red: red, blue: blue};
+            }
+            function colorClashes(color) {
+                plantArray.forEach(function(plantToCompare) {
+                    if (plantToCompare.randomColor && Math.abs(getSumOfColor(plantToCompare.randomColor) - getSumOfColor(color)) < 30) {
+                        return true;
+                    }
+                }); 
+                return false;
+            }      
+            do var color = randomColor();
+            while (colorClashes(color));
             var textColor = '';
-            if (green + red + blue > 350) {
+            if (color.green + color.red + color.blue > 350) {
                 textColor = 'black';
             } else {
                 textColor = 'white';
             }
-            plant.color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
-            plant.backgroundColor = {'background-color': 'rgb(' + red + ', ' + green + ', ' + blue + ')'};
+            plant.randomColor = color;
+            plant.color = 'rgb(' + color.red + ', ' + color.green + ', ' + color.blue + ')';
+            plant.backgroundColor = {'background-color': 'rgb(' + color.red + ', ' + color.green + ', ' + color.blue + ')'};
             plant.textColor = {'color': textColor};
         })
         $scope.plants = plantArray;
