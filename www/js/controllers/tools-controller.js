@@ -168,4 +168,10 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         $scope.brush = {customType: 'tree', color: 'rgb(170, 80, 80)', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(170, 80, 80)'}, diameter: 5};
     }
 
+    $scope.save = function() {
+        paper.view.draw();
+        var imageName = "aqu-scape-layout" + new Date().toISOString();
+        paper.view.element.toBlob(function(blob) { saveAs(blob, imageName);});
+    }
+
 }]);
