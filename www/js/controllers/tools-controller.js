@@ -43,7 +43,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 else item.bounds.bottomRight = event.point;
             } else {
                 item.position = event.point;
-                item.text.position = event.point;
+                if (item.text) item.text.position = event.point;
             }
         }
         paper.view.onMouseUp = function(event) {
