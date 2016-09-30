@@ -62,7 +62,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 item.originalPosition = item.position;
             }
             item.resized = true;
-            item = undefined;
+            $scope.selectedItem = undefined;
         }
     }    
 
@@ -126,6 +126,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     $scope.setBrush = function(plant) {
         $scope.brush = plant;
+        $scope.selectedItem = undefined;
     }
 
     $scope.undo = function() {
@@ -151,6 +152,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     }
 
     $scope.clear = function() {
+        $scope.selectedItem = undefined;
         actionStack = [];
         currentUndoIndex = 0;
         paper.project.activeLayer.removeChildren();
@@ -158,10 +160,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     }
 
     $scope.stoneBrush = function() {
+        $scope.selectedItem = undefined;
         $scope.brush = {customType: 'stone', color: 'rgb(150, 150, 150)', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(150, 150, 150)'}, diameter: 5};
     }
 
     $scope.treeBrush = function() {
+        $scope.selectedItem = undefined;
         $scope.brush = {customType: 'tree', color: 'rgb(170, 80, 80)', textColor: {'color': 'white'}, backgroundColor: {'background-color': 'rgb(170, 80, 80)'}, diameter: 5};
     }
 
