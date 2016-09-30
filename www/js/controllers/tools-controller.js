@@ -47,7 +47,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
         paper.view.onMouseUp = function(event) {
             if (!$scope.selectedItem) return;
             $scope.selectedItem.strokeColor = 'black';
-            if (!$scope.selectedItem.customType) $scope.selectedItem.position = event.point;
+            if (!$scope.selectedItem.customType || $scope.selectedItem.resized) $scope.selectedItem.position = event.point;
             $scope.selectedItem.resized = true;
             $scope.selectedItem = undefined;
         }
