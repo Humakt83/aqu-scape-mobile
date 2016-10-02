@@ -15,6 +15,9 @@ angular.module('aqu-scape').factory('UndoRedoTool', [function() {
             actionStack = [];
             currentUndoIndex = 0;
         },
+        /**
+         * Either moves the object back to its previous position or makes it disappear by changing its opacity to 0 
+         */
         undo: function() {
             if (actionStack.length < 1 || currentUndoIndex < 0) return;
             if (actionStack[currentUndoIndex].action === 'move') {
@@ -27,6 +30,9 @@ angular.module('aqu-scape').factory('UndoRedoTool', [function() {
             currentUndoIndex -= 1;
             paper.view.draw();
         },
+        /**
+         * Either moves the object to its next position or makes it reappear by changing its opacity to 1 
+         */
         redo: function() {
             if (actionStack.length < 1 || !actionStack[currentUndoIndex + 1]) return;
             currentUndoIndex = currentUndoIndex + 1;

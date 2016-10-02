@@ -14,6 +14,9 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
         return color.red + color.green + color.blue;
     }
 
+    /**
+     * Returns random color where green, if not dominant color, is not dominated by other colors
+     */
     randomColorTiltedGreen = function() {
         var minimumGreen = 100;
         var green = Math.max(Math.floor(Math.random() * 255), minimumGreen);
@@ -22,6 +25,9 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
         return {green: green, red: red, blue: blue};
     }
 
+    /**
+     * Determines whether the color clashes with plants that already have a color assigned to them
+     */
     colorClashes = function(color, plantArray) {
         plantArray.forEach(function(plantToCompare) {
             if (plantToCompare.randomColor && Math.abs(getSumOfColor(plantToCompare.randomColor) - getSumOfColor(color)) < 30) {
@@ -40,6 +46,10 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
     }
 
     return {
+        /**
+         * Draws an ellipse to the canvas and returns it. 
+         * Size of the ellipse is determined by the current dimension and provided diameter
+         */
         drawEllipseFittingCanvasAndDimension: function(point, diameter, color) {
             var size = new paper.Size(scaleDepthToFittingDimensions(diameter), scaleWidthToFittingDimensions(diameter))
             point.x = point.x - (size.width / 2);
@@ -50,8 +60,12 @@ angular.module('aqu-scape').factory('GraphicsService', ['AquariumDimensions', fu
             ellipse.strokeColor = 'black';
             return ellipse;
         },
+        /**
+         * Sets color properties of the plants
+         */
         assignColorPropertiesToPlants: function(plantArray) {
             plantArray.forEach(function(plant) {
+                //Potentially a dangerous never-ending loop if there are too many plants. Have to be revised if the number of different plants increase.
                 do var color = randomColorTiltedGreen();
                 while (colorClashes(color, plantArray));
                 var textColor = textColorFittingBackground(color);

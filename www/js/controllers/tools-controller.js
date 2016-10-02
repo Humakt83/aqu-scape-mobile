@@ -11,10 +11,12 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
     initCanvas = function() {
         var canvas = document.getElementById('aquCanvas');        
         paper.setup(canvas);
-        paper.view.draw();        
+        paper.view.draw();
+        //inserts an object        
         paper.view.onMouseDown = function(event) {            
             if (!$scope.brush) return;
             var ellipse = GraphicsService.drawEllipseFittingCanvasAndDimension(event.point, $scope.brush.diameter, $scope.brush.color);
+            //selects the placed object
             ellipse.onMouseDown = function(event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -40,6 +42,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
             UndoRedoTool.pushToActionStack(ellipse, UndoRedoTool.addAction());            
             paper.view.draw();
         }
+        //moves the selected object
         paper.view.onMouseDrag = function(event) {
             var item = $scope.selectedItem;
             if (!item) return;
@@ -51,6 +54,7 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
                 if (item.text) item.text.position = event.point;
             }
         }
+        //unselects the object
         paper.view.onMouseUp = function(event) {
             var item = $scope.selectedItem;
             if (!item || item.strokeColor === 'yellow') return;
@@ -71,6 +75,9 @@ angular.module('aqu-scape').controller('ToolsController', [ '$scope', '$ionicMod
 
     initCanvas();
 
+    /**
+     * Loops through placed plants and sets fill color of any plants in shadow to red.
+     */
     goThroughDrawnPlants = function() {
         let visiblePlants = drawnPlants.filter(function(plant) { return plant.opacity === 1});
         visiblePlants.forEach(function(ellipse) {
